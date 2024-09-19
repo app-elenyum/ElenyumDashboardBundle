@@ -1,0 +1,64 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  elenyum_dashboard:
+    public: true
+    class: 'Elenyum\Dashboard\Controller\IndexController'
+    arguments:
+      $kernel: '@kernel'
+      $options: '%elenyum_dashboard.config%'
+
+  elenyum_dashboard_blocks:
+    public: true
+    class: 'Elenyum\Dashboard\Controller\DashboardBlocksController'
+    arguments:
+      $service: '@Elenyum\Dashboard\Service\DashboardService'
+
+  #  # makes classes in src/ available to be used as services
+  #  # this creates a service per class whose id is the fully-qualified class name
+  Elenyum\Dashboard\:
+    resource: '../src/'
+    exclude:
+      - '../src/DependencyInjection/'
+      - '../src/ElenyumMakerBundle.php'
+
+  Elenyum\Dashboard\EventListener\StatCountRequestListener:
+    arguments:
+      $elenyumControllerStatsLogger: '@monolog.logger.elenyum_controller_stats'
+    tags:
+      - { name: 'kernel.event_subscriber' }
+
+  Elenyum\Dashboard\Service\Doc\RequestsService:
+    tags:
+      - { name: 'elenyum.dashboard.doc.metric', priority: 100 }
+
+  Elenyum\Dashboard\Service\Doc\DatabaseService:
+    tags:
+      - { name: 'elenyum.dashboard.doc.metric', priority: 90 }
+
+  Elenyum\Dashboard\Service\Doc\ResponseTimeService:
+    tags:
+      - { name: 'elenyum.dashboard.doc.metric', priority: 80 }
+
+  Elenyum\Dashboard\Service\Doc\ErrorRequestsService:
+    calls:
+      - setOptions: ['%elenyum_dashboard.config%']
+    tags:
+      - { name: 'elenyum.dashboard.doc.metric', priority: 70 }
+
+  Elenyum\Dashboard\Service\Doc\SlowestEndpointsService:
+    tags:
+      - { name: 'elenyum.dashboard.doc.metric', priority: 60 }
+
+  Elenyum\Dashboard\Service\Doc\TopEndpointsService:
+    tags:
+      - { name: 'elenyum.dashboard.doc.metric', priority: 50 }
+
+
+
+  Elenyum\Dashboard\Service\DashboardService:
+    arguments:
+      $cards: !tagged_iterator elenyum.dashboard.doc.metric
+

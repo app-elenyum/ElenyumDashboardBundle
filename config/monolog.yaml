@@ -1,0 +1,18 @@
+monolog:
+  channels: ['elenyum_controller_stats', 'elenyum_database_stats', 'elenyum_session_stats']
+  handlers:
+    elenyum_controller_stats:
+      type: stream
+      path: '%kernel.logs_dir%/elenyum/controller_stats.log'
+      level: info
+      channels: ["elenyum_controller_stats"]
+    elenyum_database_stats:
+      type: stream
+      path: '%kernel.logs_dir%/elenyum/database_stats.log'
+      level: info
+      channels: ["elenyum_database_stats"]
+    elenyum_session_stats:
+      type: stream
+      path: '%kernel.logs_dir%/elenyum/session_stats.log'
+      level: info
+      channels: ["elenyum_session_stats"]
