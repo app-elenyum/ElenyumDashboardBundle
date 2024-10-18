@@ -6,7 +6,6 @@ namespace Elenyum\Dashboard\Attribute;
 class StatCountRequest
 {
     public function __construct(
-
     ) {
     }
 }

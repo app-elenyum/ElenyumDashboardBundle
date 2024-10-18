@@ -14,6 +14,7 @@ class TopEndpointsService extends AbstractModuleService
         /** @var ControllerStatsLogObject $log */
         foreach ($this->getControllerStatsLog() as $log) {
             $endpoint = $log->getEndpoint();
+            $method = $log->getMethod();
 
             if (isset($endpoints[$endpoint])) {
                 $endpoints[$endpoint]++;
@@ -31,7 +32,7 @@ class TopEndpointsService extends AbstractModuleService
         // Формируем массив для вывода в требуемом формате
         $values = [];
         foreach ($topEndpoints as $endpoint => $count) {
-            $values[$endpoint] = $count.' calls';
+            $values[$method.':'.$endpoint] = $count.' calls';
         }
 
         return [

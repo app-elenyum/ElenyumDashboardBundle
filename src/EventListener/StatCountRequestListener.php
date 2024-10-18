@@ -57,17 +57,19 @@ class StatCountRequestListener implements EventSubscriberInterface
             $controller = $request->attributes->get('_controller');
             $timestamp = date('Y-m-d H:i:s');
             $endpoint = $request->getPathInfo();
+            $method = $request->getMethod();
 
             // Логируем информацию в файл
-            $this->logRequestWidthMonologData($timestamp, $controller, $endpoint, $duration);
+            $this->logRequestWidthMonologData($timestamp, $method, $controller, $endpoint, $duration);
         }
     }
 
-    private function logRequestWidthMonologData($timestamp, $controller, $endpoint, $duration)
+    private function logRequestWidthMonologData($timestamp, $method, $controller, $endpoint, $duration)
     {
         // Логируем информацию
         $this->elenyumControllerStatsLogger->info('Controller executed.', [
             'timestamp' => $timestamp,
+            'method' => $method,
             'endpoint' => $endpoint,
             'controller' => $controller,
             'duration' => $duration,
@@ -85,6 +87,7 @@ class StatCountRequestListener implements EventSubscriberInterface
 
             $controller = $request->attributes->get('_controller');
             $timestamp = date('Y-m-d H:i:s');
+            $method = $request->getMethod();
             $endpoint = $request->getPathInfo();
             $errorMessage = $exception->getMessage();
             $errorCode = $exception->getCode();
@@ -92,6 +95,7 @@ class StatCountRequestListener implements EventSubscriberInterface
             // Логируем информацию об ошибке
             $this->elenyumControllerStatsLogger->error('Controller execution failed.', [
                 'timestamp' => $timestamp,
+                'method' => $method,
                 'endpoint' => $endpoint,
                 'controller' => $controller,
                 'duration' => $duration,

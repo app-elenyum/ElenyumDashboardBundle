@@ -13,6 +13,7 @@ class ControllerStatsLogObject
     public const TYPE_EXCEPTION = 'exception';
 
     private DateTime $timestamp;
+    private string $method;
     private string $endpoint;
     private string $controller;
     private int $duration;
@@ -23,6 +24,7 @@ class ControllerStatsLogObject
 
     /**
      * @param DateTime $timestamp
+     * @param string $method
      * @param string $endpoint
      * @param string $controller
      * @param int $duration
@@ -33,6 +35,7 @@ class ControllerStatsLogObject
      */
     public function __construct(
         DateTime $timestamp,
+        string $method,
         string $endpoint,
         string $controller,
         int $duration,
@@ -42,6 +45,7 @@ class ControllerStatsLogObject
         int $errorCode = null
     ) {
         $this->timestamp = $timestamp;
+        $this->method = $method;
         $this->endpoint = $endpoint;
         $this->controller = $controller;
         $this->duration = $duration;
@@ -54,6 +58,11 @@ class ControllerStatsLogObject
     public function getTimestamp(): DateTime
     {
         return $this->timestamp;
+    }
+
+    public function getMethod(): string
+    {
+        return $this->method;
     }
 
     public function getEndpoint(): string

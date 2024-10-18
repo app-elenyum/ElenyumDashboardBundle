@@ -3,12 +3,12 @@
 namespace Elenyum\Dashboard\Service\Doc;
 
 use DateTime;
-use Elenyum\Maker\Service\Module\Config\ConfigEditorService;
 use Exception;
 use Generator;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Symfony\Component\Yaml\Yaml;
 use Symfony\Contracts\Service\Attribute\Required;
 
 abstract class AbstractModuleService implements DocInterface
@@ -23,19 +23,12 @@ abstract class AbstractModuleService implements DocInterface
      */
     private ?string $namespace;
 
-    /**
-     * @var ConfigEditorService
-     */
-    private ConfigEditorService $config;
-
     #[Required]
     public KernelInterface $kernel;
 
     #[Required]
     public function setOptions(#[Autowire('%elenyum_dashboard.config%')] $options): void
     {
-
-//        dd($options);
         $root = $options['root'] ?? null;
         if ($root === null) {
             throw new MissingOptionsException('Not defined "root" option');
@@ -56,9 +49,7 @@ abstract class AbstractModuleService implements DocInterface
     {
         $file = $this->path.'/../config/'.$file;
         if (file_exists($file)) {
-            $this->config = new ConfigEditorService($file);
-
-            return $this->config->parse();
+            return Yaml::parseFile($file);
         }
 
         return null;
@@ -95,12 +86,14 @@ abstract class AbstractModuleService implements DocInterface
     {
         // Регулярное выражение для успешных запросов
         $successPattern = '/Controller executed\. \{"timestamp":"(?P<timestamp>[^"]+)",'
+            . '"method":"(?P<method>[^"]+)",'
             . '"endpoint":"(?P<endpoint>[^"]+)",'
             . '"controller":"(?P<controller>[^"]+)",'
             . '"duration":(?P<duration>\d+(\.\d+)?)\}/';
 
         // Регулярное выражение для запросов с ошибками
         $errorPattern = '/Controller execution failed\. \{"timestamp":"(?P<timestamp>[^"]+)",'
+            . '"method":"(?P<method>[^"]+)",'
             . '"endpoint":"(?P<endpoint>[^"]+)",'
             . '"controller":"(?P<controller>[^"]+)",'
             . '"duration":(?P<duration>\d+(\.\d+)?)?,'
@@ -118,6 +111,7 @@ abstract class AbstractModuleService implements DocInterface
 
             return new ControllerStatsLogObject(
                 $timestamp,
+                $matches['method'],
                 $matches['endpoint'],
                 $matches['controller'],
                 (int)$matches['duration'],
