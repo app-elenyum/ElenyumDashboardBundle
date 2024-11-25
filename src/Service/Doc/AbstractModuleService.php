@@ -98,7 +98,7 @@ abstract class AbstractModuleService implements DocInterface
             . '"controller":"(?P<controller>[^"]+)",'
             . '"duration":(?P<duration>\d+(\.\d+)?)?,'
             . '"error_message":"(?P<error_message>[^"]+)",'
-            . '"error_code":"(?P<error_code>\d+)"\}/';
+            . '"error_code":(?P<error_code>\d+)\}/';
 
         // Проверяем, соответствует ли строка формату успешного запроса
         if (preg_match($successPattern, $line, $matches)) {
@@ -131,6 +131,7 @@ abstract class AbstractModuleService implements DocInterface
 
             return new ControllerStatsLogObject(
                 $timestamp,
+                $matches['method'],
                 $matches['endpoint'],
                 $matches['controller'],
                 isset($matches['duration']) ? (int)$matches['duration'] : null,
@@ -142,7 +143,7 @@ abstract class AbstractModuleService implements DocInterface
         }
 
         // Вернем null, если строка не соответствует ни одному из форматов
-        return null;
+        throw new Exception('Invalid log format');
     }
 
     abstract public function getStats(): array;
