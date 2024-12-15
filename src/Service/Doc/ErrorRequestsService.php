@@ -26,11 +26,11 @@ class ErrorRequestsService extends AbstractModuleService
             'type' => 'card',
             'data' => [
                 'top' => [
-                    'name' => 'Error requests',
+                    'name' => 'Error requests at 30 days',
                     'value' => $errorCount,
                 ],
                 'bottom' => [
-                    'name' => 'Total requests',
+                    'name' => 'Total requests at 30 days',
                     'value' => $totalCount,
                 ],
             ],

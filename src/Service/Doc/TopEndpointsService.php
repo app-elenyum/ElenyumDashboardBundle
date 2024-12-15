@@ -38,7 +38,7 @@ class TopEndpointsService extends AbstractModuleService
         return [
             'type' => 'list_card',
             'data' => [
-                'name' => 'Top Endpoints',
+                'name' => 'Top Endpoints at 30 days',
                 'values' => $values,
             ],
         ];

@@ -42,7 +42,7 @@ class SlowestEndpointsService extends AbstractModuleService
         return [
             'type' => 'list_card',
             'data' => [
-                'name' => 'Slowest Endpoints',
+                'name' => 'Slowest Endpoints at 30 days',
                 'values' => $values,
             ],
         ];

@@ -31,11 +31,11 @@ class ResponseTimeService extends AbstractModuleService
             'type' => 'card',
             'data' => [
                 'top' => [
-                    'name' => 'Average Response Time',
+                    'name' => 'Average Response Time at 30 days',
                     'value' => round($average).' ms',
                 ],
                 'bottom' => [
-                    'name' => '95th Percentile Response Time',
+                    'name' => '95th Percentile Response Time at 30 days',
                     'value' => $percentile95th.' ms',
                 ],
             ],
@@ -49,11 +49,11 @@ class ResponseTimeService extends AbstractModuleService
             'type' => 'card',
             'data' => [
                 'top' => [
-                    'name' => 'Average Response Time',
+                    'name' => 'Average Response Time at 30 days',
                     'value' => '0 ms',
                 ],
                 'bottom' => [
-                    'name' => '95th Percentile Response Time',
+                    'name' => '95th Percentile Response Time at 30 days',
                     'value' => '0 ms',
                 ],
             ],

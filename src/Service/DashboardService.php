@@ -18,16 +18,13 @@ class DashboardService
      */
     public function getMetrics(): array
     {
-
         $result = [];
         try {
-
-        foreach ($this->cards as $card) {
-            if ($card instanceof DocInterface) {
-                $result[] = $card->getStats();
+            foreach ($this->cards as $card) {
+                if ($card instanceof DocInterface) {
+                    $result[] = $card->getStats();
+                }
             }
-        }
-
         } catch (Exception $e) {
             dd([$e->getMessage(), $e->getFile(), $e->getLine()]);
         }

@@ -2,7 +2,8 @@ monolog:
   channels: ['elenyum_controller_stats']
   handlers:
     elenyum_controller_stats:
-      type: stream
+      type: rotating_file
       path: '%kernel.logs_dir%/elenyum/controller_stats.log'
       level: info
+      max_files: 30
       channels: ["elenyum_controller_stats"]

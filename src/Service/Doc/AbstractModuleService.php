@@ -55,23 +55,56 @@ abstract class AbstractModuleService implements DocInterface
         return null;
     }
 
+//    /**
+//     * @throws Exception
+//     */
+//    protected function getControllerStatsLog(): Generator
+//    {
+//        $logFile = $this->kernel->getLogDir().'/elenyum/controller_stats.log';
+//
+//        if (file_exists($logFile)) {
+//            $file = fopen($logFile, 'r');
+//
+//            if ($file) {
+//                try {
+//                    while (($line = fgets($file)) !== false) {
+//                        yield $this->parseLogLine($line);
+//                    }
+//                } finally {
+//                    fclose($file);
+//                }
+//            }
+//        }
+//    }
+
     /**
      * @throws Exception
      */
     protected function getControllerStatsLog(): Generator
     {
-        $logFile = $this->kernel->getLogDir().'/elenyum/controller_stats.log';
+        $logDir = $this->kernel->getLogDir().'/elenyum/';
+        $logPattern = '/^controller_stats-\d{4}-\d{2}-\d{2}\.log$/'; // Регулярное выражение для имени файла
 
-        if (file_exists($logFile)) {
-            $file = fopen($logFile, 'r');
+        // Получаем список всех файлов в директории
+        $logFiles = scandir($logDir);
 
-            if ($file) {
-                try {
-                    while (($line = fgets($file)) !== false) {
-                        yield $this->parseLogLine($line);
+        if (!$logFiles) {
+            throw new Exception("Unable to read log directory: $logDir");
+        }
+
+        foreach ($logFiles as $file) {
+            if (preg_match($logPattern, $file)) { // Проверяем, подходит ли имя файла под шаблон
+                $filePath = $logDir . $file;
+                $fileHandle = fopen($filePath, 'r');
+
+                if ($fileHandle) {
+                    try {
+                        while (($line = fgets($fileHandle)) !== false) {
+                            yield $this->parseLogLine($line); // Парсим строку и возвращаем результат
+                        }
+                    } finally {
+                        fclose($fileHandle);
                     }
-                } finally {
-                    fclose($file);
                 }
             }
         }
