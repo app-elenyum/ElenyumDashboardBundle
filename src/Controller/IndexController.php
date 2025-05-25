@@ -24,13 +24,19 @@ class IndexController extends AbstractController
 
         $appConfig = [
             'options' => $this->options['options'] ?? [
-                'prefix' => '/elenyum/dashboard'
+                'prefix' => '/elenyum/dashboard',
+                'servername' => $urlDefault
             ],
             'dashboard' => $this->options['dashboard'] ?? [
-                'enable' => true,
-                'url' => $urlDefault,
-                'endpoint' => '/elenyum/blocks'
-            ],
+                    'enable' => true,
+                    'url' => $urlDefault,
+                    'endpoint' => '/elenyum/blocks',
+                    'login' => [
+                        "enable" => true,
+                        "endpoint" => "/api/login",
+                        "check" => "/api/check_login",
+                    ],
+                ],
             'user' => $this->options['user'] ?? [
                 'enable' => true,
                 'url' => $urlDefault,

@@ -55,28 +55,6 @@ abstract class AbstractModuleService implements DocInterface
         return null;
     }
 
-//    /**
-//     * @throws Exception
-//     */
-//    protected function getControllerStatsLog(): Generator
-//    {
-//        $logFile = $this->kernel->getLogDir().'/elenyum/controller_stats.log';
-//
-//        if (file_exists($logFile)) {
-//            $file = fopen($logFile, 'r');
-//
-//            if ($file) {
-//                try {
-//                    while (($line = fgets($file)) !== false) {
-//                        yield $this->parseLogLine($line);
-//                    }
-//                } finally {
-//                    fclose($file);
-//                }
-//            }
-//        }
-//    }
-
     /**
      * @throws Exception
      */

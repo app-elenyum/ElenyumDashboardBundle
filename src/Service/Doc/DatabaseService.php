@@ -19,7 +19,7 @@ class DatabaseService extends AbstractModuleService
                     'value' => count($connections),
                 ],
                 'bottom' => [
-                    'name' => 'Total modules',
+                    'name' => 'Total tables', // todo поправить счет количества таблиц
                     'value' => count($mappings),
                 ],
             ],
